@@ -1,90 +1,71 @@
-🚀 AuthForge — Secure User Authentication API
+🚀 AUTHFORGE
+🔐 Enterprise-Grade Authentication Backend API
+⚡ Secure • Scalable • Production-Ready
+<p align="center"> <b>A powerful Node.js authentication system built for modern applications</b> </p> <p align="center"> <img src="https://img.shields.io/badge/Node.js-Backend-green?style=for-the-badge"> <img src="https://img.shields.io/badge/Express.js-Framework-black?style=for-the-badge"> <img src="https://img.shields.io/badge/MongoDB-Database-brightgreen?style=for-the-badge"> <img src="https://img.shields.io/badge/Auth-JWT-orange?style=for-the-badge"> </p>
+🌟 What is AuthForge?
 
-A robust, production-ready backend for modern applications
+AuthForge is a secure and scalable authentication backend designed to power modern web and mobile applications.
 
+It handles:
+✔ User Registration
+✔ Secure Login
+✔ JWT Authentication
+✔ Protected Routes
+✔ Cookie-based Sessions
 
+All built using best security practices.
 
-
-
-
-
-
-
-
-🌟 Overview
-
-AuthForge is a secure, scalable user authentication backend built with Node.js, Express, MongoDB, and JWT. It handles user registration, login, authentication, and protected routes with best practices for security and performance.
-
-Designed for:
+🎯 Built For
 
 🚀 Startups
-
-📱 Mobile Apps
-
 🌐 Web Applications
+📱 Mobile Apps
+🧩 Microservices
+👨‍💻 Developers who value clean architecture
 
-🧩 Microservices Architecture
-
-🎯 Why This Project Exists
-
-Authentication is the backbone of every application. AuthForge was built to provide:
-
-✔️ Secure password storage
-✔️ Token-based authentication
-✔️ Cookie-based session support
-✔️ Clean architecture for scalability
-✔️ Developer-friendly integration
-
-✨ Features
-
-🔐 Secure User Registration
-
-Input validation
+✨ Core Features
+🔐 Secure Authentication
 
 Password hashing with bcrypt
 
-Duplicate user prevention
+JWT-based authorization
 
-🔑 JWT Authentication
-
-Token generation on login
-
-HTTP-only cookies
-
-Authorization headers supported
+HTTP-only cookie storage
 
 🛡️ Protected Routes
 
 Middleware-based access control
 
-Profile route security
+Secure profile endpoint
 
 ⚡ Performance Optimized
 
-Minimal middleware overhead
+Minimal API latency
 
 Efficient MongoDB queries
 
-🌍 CORS Enabled
+🌍 Frontend Ready
 
-Frontend integration ready
+CORS enabled
 
-🧠 Architecture Overview
-Client → Routes → Controllers → Middleware → MongoDB
-             ↓
-          JWT Auth
+Cookie + token authentication
+
+🧠 System Architecture
+Client → API Routes → Controllers → Middleware → MongoDB
+                      ↓
+                 JWT Verification
 
 🛠️ Tech Stack
-Technology	Purpose
-Node.js	Backend runtime
-Express.js	API framework
+Tech	Purpose
+Node.js	Backend Runtime
+Express.js	API Framework
 MongoDB	Database
 Mongoose	ODM
 JWT	Authentication
-bcrypt	Password hashing
-dotenv	Environment management
-cookie-parser	Cookie handling
-express-validator	Input validation
+bcrypt	Password Security
+dotenv	Environment Config
+cookie-parser	Cookie Handling
+express-validator	Input Validation
 📂 Project Structure
 backend/
 │── middleware/
@@ -97,17 +78,17 @@ backend/
 │── package.json
 │── .env
 
-⚙️ Installation Guide
-🔹 1. Clone the repository
+⚙️ Setup Guide
+🔹 Clone the repository
 git clone <your-repo-url>
 cd backend
 
-🔹 2. Install dependencies
+🔹 Install dependencies
 npm install
 
-🔹 3. Setup environment variables
+🔹 Configure environment variables
 
-Create .env file:
+Create a .env file:
 
 PORT=4000
 MONGO_URI=your_mongodb_uri
@@ -115,71 +96,47 @@ JWT_SECRET=your_secret_key
 JWT_EXPIRES_IN=1d
 NODE_ENV=development
 
-🔹 4. Run the server
+🔹 Run the server
 
-Development:
+Development mode:
 
 npm run dev
 
 
-Production:
+Production mode:
 
 npm start
-
-
-Server runs at:
-
-http://localhost:4000
 
 🔗 API Endpoints
 🟢 Register User
 
 POST /api/auth/register
 
-{
-  "name": "Harry",
-  "email": "harry@example.com",
-  "password": "123456"
-}
-
 🔵 Login User
 
 POST /api/auth/login
-
-Returns JWT token
-
-Stored in HTTP-only cookie
 
 🔴 Logout User
 
 POST /api/auth/logout
 
-🟡 Get Profile (Protected)
+🟡 Profile (Protected)
 
 GET /api/auth/profile
 
-Requires:
-
-JWT token in cookie or header
-
 🔒 Security Highlights
 
-✅ Password Hashing
-✅ JWT Expiration Control
-✅ HTTP-only Cookies
-✅ Input Validation
-✅ Middleware Protection
-✅ Secure Production Settings
+✔ Password Hashing
+✔ JWT Expiry
+✔ HTTP-only Cookies
+✔ Middleware Protection
+✔ Input Validation
+✔ Production Safe Settings
 
 📸 Project Preview
-🖥️ API Testing Example
+<p align="center"> <img src="./Screenshot.png" width="800"> </p>
 
-Add your screenshot here
-
-![Auth API Screenshot](./Screenshot.png)
-
-
-👉 Save your screenshot as:
+📌 Save your screenshot as:
 
 /screenshot.png
 
@@ -191,30 +148,16 @@ Thunder Client
 
 Insomnia
 
-🚀 Future Enhancements
+🚀 Future Roadmap
 
 🔹 Email verification
-
 🔹 Password reset
-
-🔹 OAuth login
-
-🔹 Role-based access control
-
-🔹 API rate limiting
-
-🔹 Swagger documentation
-
-🤝 Contributing
-
-Pull requests are welcome!
-For major changes, open an issue first to discuss ideas.
+🔹 OAuth integration
+🔹 Role-based access
+🔹 Rate limiting
+🔹 Swagger docs
 
 👨‍💻 Author
-
 Harry
-Backend Developer | Problem Solver | Tech Enthusiast
 
-🍴 Fork it
-
-🧠 Share it
+Backend Developer • API Engineer • Problem Solver
