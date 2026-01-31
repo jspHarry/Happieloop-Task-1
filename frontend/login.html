@@ -1,0 +1,116 @@
+<!doctype html>
+<html class="h-full" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login — User Registration</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="h-full bg-slate-50 text-slate-800">
+  <div class="min-h-screen flex flex-col">
+<div class="flex flex-col items-center mt-8 mb-2">
+  <img src="assets/Happieloop.png" class="h-12 w-auto mb-2" alt="Logo">
+  <span class="text-3xl font-bold">Happieloop Technologies</span>
+</div>
+
+
+    <main class="flex-1 flex items-center justify-center py-10 px-4">
+      <div class="w-full max-w-md bg-white rounded-2xl shadow-md p-6 sm:p-8">
+        <h1 class="text-2xl font-semibold mb-1">Welcome back</h1>
+        <p class="text-sm text-slate-500 mb-6">Sign in to view your profile.</p>
+
+        <form id="loginForm" class="space-y-4">
+          <div>
+            <label for="email" class="block text-sm font-medium text-slate-700">Email</label>
+            <input id="email" type="email" required
+              class="mt-1 block w-full rounded-md border-slate-200 shadow-sm focus:border-sky-500 focus:ring-sky-500 p-2" />
+          </div>
+
+          <div>
+            <label for="password" class="block text-sm font-medium text-slate-700">Password</label>
+            <input id="password" type="password" required
+              class="mt-1 block w-full rounded-md border-slate-200 shadow-sm focus:border-sky-500 focus:ring-sky-500 p-2" />
+          </div>
+
+          <div id="error" aria-live="polite" class="text-sm text-red-600"></div>
+
+          <div>
+            <button id="loginBtn" type="submit"
+              class="w-full rounded-md bg-sky-600 text-white px-4 py-2 text-sm font-medium hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500">
+              Login
+            </button>
+          </div>
+        </form>
+
+        <p class="mt-4 text-sm text-slate-600 text-center">
+          Don't have an account?
+          <a href="register.html" class="text-sky-600 hover:underline">Create one</a>
+        </p>
+      </div>
+    </main>
+
+    <footer class="py-4">
+      <div class="max-w-3xl mx-auto text-center text-xs text-slate-400">
+        Made with ❤️ — Jaspinder Singh
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const apiBase = 'http://localhost:4000/api/auth';
+
+      function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const errorDiv = document.getElementById('error');
+      const loginBtn = document.getElementById('loginBtn');
+      errorDiv.textContent = '';
+
+      // basic client-side validation
+      if (!email || !password) {
+        errorDiv.textContent = 'Email and password are required.';
+        return;
+      }
+
+      try {
+        loginBtn.disabled = true;
+        loginBtn.textContent = 'Logging in...';
+        await sleep(800);
+        
+        const res = await fetch(`${apiBase}/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+           
+          body: JSON.stringify({ email, password })
+        });
+
+        // parse JSON response (server sends { message, token } or { errors: [...] })
+        const result = await res.json();
+        console.log('login response', result);
+
+        if (!res.ok) {
+        errorDiv.textContent = result.message || (result.errors && result.errors.map(x => x.msg).join(', ')) || 'Login failed';
+        return;
+        }
+        // store token in localStorage
+        if (result.token) {
+          localStorage.setItem('token', result.token);
+        }
+        // success: redirect to profile (cookie-based auth)
+        location.href = 'profile.html';
+      } catch (err) {
+        console.error('Network/login error', err);
+        errorDiv.textContent = 'Network error. Check backend.';
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Login';
+      }
+    });
+  </script>
+</body>
+</html>

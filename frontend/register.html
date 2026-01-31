@@ -1,0 +1,144 @@
+<!doctype html>
+<html class="h-full" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Register — User Registration</title>
+
+  <!-- Tailwind Play CDN (quick & responsive) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="h-full bg-slate-50 text-slate-800">
+  <div class="min-h-screen flex flex-col">
+ 
+<div class="flex flex-col items-center mt-8 mb-2">
+  <img src="assets/Happieloop.png" class="h-12 w-auto mb-2" alt="Logo">
+  <span class="text-3xl font-bold">Happieloop Technologies</span>
+</div>
+
+         
+
+    <main class="flex-1 flex items-center justify-center py-4 px-4">
+      <div class="w-full max-w-lg bg-white rounded-2xl shadow-md p-6 sm:p-8">
+        <h1 class="text-2xl font-semibold mb-1">Create an account</h1>
+        <p class="text-sm text-slate-500 mb-3">Simple and secure</p>
+
+        <div id="error" aria-live="polite" class="text-sm text-red-600"></div>
+        <div id="success" aria-live="polite" class="text-sm text-green-600"></div>
+
+        <form id="registerForm" class="space-y-4">
+          <div>
+            <label for="name" class="block text-sm font-medium text-slate-700">Full name</label>
+            <input id="name" name="name" required
+              class="mt-1 block w-full rounded-md border-slate-200 shadow-sm focus:border-sky-500 focus:ring-sky-500 p-2" />
+          </div>
+
+          <div>
+            <label for="email" class="block text-sm font-medium text-slate-700">Email</label>
+            <input id="email" type="email" name="email" required
+              class="mt-1 block w-full rounded-md border-slate-200 shadow-sm focus:border-sky-500 focus:ring-sky-500 p-2" />
+          </div>
+
+          <div>
+            <label for="password" class="block text-sm font-medium text-slate-700">Password</label>
+            <input id="password" type="password" name="password" required minlength="6"
+              class="mt-1 block w-full rounded-md border-slate-200 shadow-sm focus:border-sky-500 focus:ring-sky-500 p-2" />
+            <p class="text-xs text-slate-400 mt-1">Minimum 6 characters.</p>
+          </div>
+
+
+
+          <div class="pt-2">
+            <button id="registerBtn" type="submit"
+              class="w-full inline-flex items-center justify-center gap-2 rounded-md bg-sky-600 text-white px-4 py-2 text-sm font-medium hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500">
+              Register
+            </button>
+          </div>
+        </form>
+
+        <p class="mt-4 text-sm text-slate-600 text-center">
+          Already have an account?
+          <a href="login.html" class="text-sky-600 hover:underline">Sign in</a>
+        </p>
+      </div>
+    </main>
+
+    <footer class="py-4">
+      <div class="max-w-3xl mx-auto text-center text-xs text-slate-400">
+        Made with ❤️ — Jaspinder Singh
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const apiBase = 'http://localhost:4000/api/auth';
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nameEl = document.getElementById('name');
+      const emailEl = document.getElementById('email');
+      const passwordEl = document.getElementById('password');
+      const errorDiv = document.getElementById('error');
+      const successDiv = document.getElementById('success');
+      const btn = document.getElementById('registerBtn');
+
+      errorDiv.textContent = '';
+      successDiv.textContent = '';
+
+      const name = nameEl.value.trim();
+      const email = emailEl.value.trim().toLowerCase();
+      const password = passwordEl.value;
+
+      // basic client-side validation
+      if (!name || !email || !password) {
+        errorDiv.textContent = 'Please fill all fields.';
+        return;
+      }
+      if (password.length < 6) {
+        errorDiv.textContent = 'Password must be at least 6 characters.';
+        return;
+      }
+
+      try {
+        btn.disabled = true;
+        btn.textContent = 'Register';
+
+        const res = await fetch(`${apiBase}/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include', // keeps behaviour consistent with login/profile flows
+          body: JSON.stringify({ name, email, password })
+        });
+
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+          // Prefer server-returned message, then validation errors array
+          const msg = data.message || (data.errors && data.errors.map(e => e.msg || e.message).join(', ')) || 'Registration failed';
+          errorDiv.textContent = msg;
+          return;
+        }
+
+        // success
+        successDiv.textContent = data.message || 'Registered successfully. Redirecting to login...';
+        // small delay so user sees message
+        setTimeout(() => location.href = 'login.html', 1000);
+      } catch (err) {
+        console.error('Register error', err);
+        errorDiv.textContent = 'Network error. Check backend.';
+      } finally {
+        btn.disabled = false;
+        if(successDiv.textContent) {
+          btn.textContent = 'Registering...';
+        }else{
+          btn.textContent = 'Register'; 
+       }
+      }
+    });
+  </script>
+</body>
+</html>
